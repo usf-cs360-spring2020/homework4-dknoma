@@ -12,11 +12,11 @@
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
 
 // set svg size and plot margins
-// const width = 960;
-// const height = 500;
-// const padding = 20;
-// const size = 230;
-//
+const width = 960;
+const height = 500;
+const padding = 20;
+const size = 230;
+
 // const columns = {
 //   NAME: 'name',
 //   COUNT: 'count',
@@ -54,103 +54,26 @@
 //                 .range(d3.schemeCategory10);
 
 // select svg
-// const svg = d3.select('#scatter-plot');
-// console.assert(svg.size() === 1);
+const svg = d3.select('#hierarchy');
+const plot = svg.append('g')
+                .attr('id', 'plot');
 
-// add plot region
-// const plot = svg.append('g')
-//                 .attr('id', 'plot');
-
-// load data and trigger draw
-// d3.csv('Fire_Department_Calls_for_Service_alarms.csv', convert)
-//   .then(draw);
-
-// var stratify = d3.stratify()
-//                  .parentId(function (d) {
-//                    return d.path.substring(0, d.path.lastIndexOf("\\"));
-//                  })
-//                  .id(function (d) {
-//                    return d.path;
-//                  });
-//
-// var data = d3.csvParse(`path,size
-// root,0
-// root\\child1,10
-// root\\child2,20
-// `);
-//
-// var root = stratify(data);
-// console.log(root);
-
-
-let json = d3.json('fdc_data.json')
-             .then(draw);
-
-
-
-
-
-
-// let data = d3.csvParse('Fire_Department_Calls_for_Service_alarms.csv');
-//
-// let stratify = d3.stratify()
-//                  .id(d => d['Neighborhooods - Analysis Boundaries'])
-//                  .parentId(d => d['Call Type Group']);
-//
-// let root = stratify(data);
-//
-// let hierarchy = d3.stratify(json);
-// console.log(hierarchy);
-//
-// let data = d3.hierarchy(hierarchy, d => console.log(d));
-// console.log(data);
-
-// since we do not need the data for our domains, we can draw our axis/legends right away
-// drawAxis();
-// drawTitles();
-// drawColorLegend();
-
-/*
- * converts values as necessary
- */
-function convert(row) {
-  // let convert = {};
-  //
-  // let name = row[columns.NAME];
-  // let count = row[columns.COUNT];
-  // let kMean = row[columns.K_MEAN];
-  // let pMean = row[columns.PAR_MEAN];
-  // let female = row[columns.FEMALE];
-  // let type = row[columns.TYPE];
-  //
-  // convert[columns.NAME] = name;
-  // convert[columns.TYPE] = parseInt(type);
-  // convert[columns.COUNT] = parseInt(count);
-  // convert[columns.K_MEAN] = parseFloat(kMean);
-  // convert[columns.PAR_MEAN] = parseFloat(pMean);
-  // convert[columns.FEMALE] = parseFloat(female);
-  //
-  // return convert;
-  return row;
-}
+d3.json('fdc_data.json')
+  .then(draw);
 
 function draw(data) {
-  // var root = d3.stratify()
-  //              .id(function(d) { return d.name; })
-  //              .parentId(function(d) { return d.parent; })
-  //              (data);
-
-  // let hierarchy = d3.stratify(data);
-  // console.log(hierarchy);
-
   let json = d3.hierarchy(data);
   console.log(json);
 
-  // console.log(data);
+  const group = plot.append('g')
+                    .attr('id', 'cells');
 
-  // console.log('loaded:', data.length, data[0]);
-  //
-  // drawCells(data);
+  group.append('g')
+       .append('text')
+       .attr('x', 0)
+       .attr('y', 0)
+       .attr('font-size', '10px')
+       .text(json);
 }
 
 /*
